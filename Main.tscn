@@ -1,0 +1,81 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Ball.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Opponent.gd" type="Script" id=3]
+[ext_resource path="res://Main.gd" type="Script" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 537, 50.1875 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 83, 298 )
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 331.0 ],
+"_edit_vertical_guides_": [ 521.0 ]
+}
+
+[node name="UpperWall" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperWall"]
+position = Vector2( 513, -50 )
+shape = SubResource( 1 )
+
+[node name="BottonWall" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottonWall"]
+position = Vector2( 518, 651 )
+shape = SubResource( 1 )
+
+[node name="LeftWall" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+position = Vector2( -83, 300 )
+shape = SubResource( 2 )
+
+[node name="RightWall" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+position = Vector2( 1107, 300 )
+shape = SubResource( 2 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 51, 178 )
+
+[node name="Opponent" parent="." instance=ExtResource( 1 )]
+position = Vector2( 969, 440 )
+script = ExtResource( 3 )
+
+[node name="Ball" parent="." instance=ExtResource( 2 )]
+position = Vector2( 522, 295 )
+
+[node name="PlayerMark" type="Label" parent="."]
+margin_left = 264.0
+margin_top = 272.0
+margin_right = 464.0
+margin_bottom = 324.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Player Mark"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="OpponentMark" type="Label" parent="."]
+margin_left = 561.0
+margin_top = 270.0
+margin_right = 761.0
+margin_bottom = 322.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Opponent Mark"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="RestartTimer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="LeftWall" to="." method="_on_LeftWall_body_entered"]
+[connection signal="body_entered" from="RightWall" to="." method="_on_RightWall_body_entered"]
+[connection signal="timeout" from="RestartTimer" to="Ball" method="_on_RestartTimer_timeout"]
